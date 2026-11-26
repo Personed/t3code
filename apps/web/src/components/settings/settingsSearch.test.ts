@@ -257,14 +257,8 @@ describe("searchSettings", () => {
 });
 
 describe("settings search targets", () => {
-  it("requires an environment for the resolved telemetry export destination", () => {
-    const result = searchSettings("OpenTelemetry export").find(
-      (item) => item.id === "telemetry-export",
-    )!;
-    const target = getSettingsSearchTargetScope(result.targetId ?? result.id)!;
-    expect(isSettingsSearchScopeAvailable(target.scope, "all")).toBe(false);
-    expect(isSettingsSearchScopeAvailable(target.scope, "project")).toBe(false);
-    expect(isSettingsSearchScopeAvailable(target.scope, "environment")).toBe(true);
+  it("does not advertise a disabled telemetry export setting", () => {
+    expect(SETTINGS_SEARCH_ITEMS.some((item) => item.id === "telemetry-export")).toBe(false);
   });
 
   it("keeps environment-wide settings out of project scopes", () => {

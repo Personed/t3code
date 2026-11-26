@@ -1,4 +1,3 @@
-/* oxlint-disable t3code/no-global-process-runtime -- Standalone setup must run before workspace dependencies are installed. */
 // @effect-diagnostics nodeBuiltinImport:off - standalone bootstrap also runs before dependencies are installed.
 // @effect-diagnostics globalConsole:off globalFetch:off globalDate:off - interactive setup and endpoint verification.
 import * as NodeCrypto from "node:crypto";
@@ -164,9 +163,9 @@ const response = await fetch(`${endpoint}/telemetry`, {
   body: JSON.stringify({
     id: NodeCrypto.randomBytes(32).toString("hex"),
     recordedAt: Date.now(),
-    host: NodeOS.hostname(),
-    platform: NodeOS.platform(),
-    arch: NodeOS.arch(),
+    host: "setup",
+    platform: "unknown",
+    arch: "unknown",
     ci: false,
     runId: "setup",
     tasks: [],
@@ -215,8 +214,6 @@ await NodeFSP.writeFile(NodePath.join(installed, "package.json"), '{"type":"modu
 for (const file of [
   "runHook.ts",
   "remoteCache.ts",
-  "flush.ts",
-  "telemetry.ts",
   "nativeHook.js",
   "nativeRunHook.js",
   "preload.mjs",
